@@ -21,7 +21,7 @@ public class ProjectTaskController {
     @Autowired
     private ProjectTaskService projectTaskService;
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> addPTToBoard(@Valid @RequestBody ProjectTask projectTask, BindingResult result){
 
         if(result.hasErrors()){
@@ -36,4 +36,22 @@ public class ProjectTaskController {
         ProjectTask newPT = projectTaskService.saveOrUpdateProjectTask(projectTask);
         return new ResponseEntity<ProjectTask>(newPT, HttpStatus.CREATED);
     }
+
+    @GetMapping("/all")
+    public Iterable<ProjectTask> getAllPTs(){
+        return projectTaskService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id){
+        ProjectTask projectTask = projectTaskService.findById(id);
+        return new ResponseEntity<ProjectTask>(projectTask, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteTask(@PathVariable Long id){
+        projectTaskService.delete(id);
+        return new ResponseEntity<String>("Project task deleted", HttpStatus.OK);
+    }
+
 }
