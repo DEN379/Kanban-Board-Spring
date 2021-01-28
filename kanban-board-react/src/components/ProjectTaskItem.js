@@ -5,6 +5,11 @@ import {connect} from "react-redux";
 import {deleteProjectTask} from "../actions/projectTaskActions";
 
 class ProjectTaskItem extends Component {
+    
+    onDeleteClick(id){
+        this.props.deleteProjectTask(id);
+    }
+
     render() {
         const {project_task} = this.props;
 
@@ -31,4 +36,10 @@ class ProjectTaskItem extends Component {
         )
     }
 }
-export default ProjectTaskItem;
+
+ProjectTaskItem.propTypes = {
+    deleteProjectTask: PropTypes.func.isRequired
+}
+
+
+export default connect(null, {deleteProjectTask}) (ProjectTaskItem);
