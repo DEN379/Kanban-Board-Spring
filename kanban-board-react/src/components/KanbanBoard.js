@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
-
+import {conect, connect} from "react-redux";
+import PropTypes from "prop-types";
+import {getBacklog} from "../actions/projectTaskActions";
  class KanbanBoard extends Component {
+
+    componentDidMount(){
+        this.props.getBacklog();
+    }
     render() {
         return (
             <div className="container">
@@ -54,4 +60,13 @@ import {Link} from 'react-router-dom';
     }
 }
 
-export default KanbanBoard;
+KanbanBoard.propTypes = {
+    getBacklog: PropTypes.func.isRequired,
+    project_tasks: PropTypes.object.isRequired
+};
+
+const mapStateProps = state =>({
+    project_tasks: state.project_task
+});
+
+export default connect(mapStateProps, {getBacklog}) (KanbanBoard);
