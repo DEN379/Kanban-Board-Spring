@@ -1,14 +1,49 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom';
-import {conect, connect} from "react-redux";
+import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import {getBacklog} from "../actions/projectTaskActions";
+import ProjectTaskItem from "./ProjectTaskItem";
  class KanbanBoard extends Component {
 
     componentDidMount(){
         this.props.getBacklog();
     }
     render() {
+
+        const {project_tasks} = this.props.project_tasks;
+
+        let BoardContent;
+        let todoItems = [];
+        let inProgressItems = [];
+        let doneItems = [];
+
+        const BoardAlgorithm = project_tasks => {
+            if(project_tasks.length < 1){
+                return(
+                    <div className="alert alert-info text-center" role="alert">No project on this board</div>
+                );
+            } else {
+                const tasks = project_tasks.map(project_task => (
+                    <ProjectTaskItem key={project_task.id} project_task={project_task} />
+                ));
+            
+
+            for(let i=0; i<tasks.length; i++){
+                if(tasks[i].props.project_task.status==="TO_DO"){
+                    todoItems.push(tasks[i]);
+                }
+                if(tasks[i].props.project_task.status==="IN_PROGRESS"){
+                    inProgressItems.push(tasks[i]);
+                }
+                if(tasks[i].props.project_task.status==="DONE"){
+                    doneItems.push(tasks[i]);
+                }
+            }
+        }
+        };
+        BoardAlgorithm(project_tasks);
+
         return (
             <div className="container">
             <Link to="/addProjectTask" className="btn btn-primary mb-3">
@@ -27,7 +62,7 @@ import {getBacklog} from "../actions/projectTaskActions";
                         </div>
     
                         {/* {<!-- SAMPLE PROJECT TASK STARTS HERE -->} */}
-                       
+                       {todoItems}
     
                         {/* {<!-- SAMPLE PROJECT TASK ENDS HERE -->} */}
                     </div>
@@ -38,8 +73,9 @@ import {getBacklog} from "../actions/projectTaskActions";
                             </div>
                         </div>
                         {/* {<!-- SAMPLE PROJECT TASK STARTS HERE -->
-    
+
                         <!-- SAMPLE PROJECT TASK ENDS HERE -->} */}
+                        {inProgressItems}
                     </div>
                     <div className="col-md-4">
                         <div className="card text-center mb-2">
@@ -50,6 +86,7 @@ import {getBacklog} from "../actions/projectTaskActions";
                        {/* { <!-- SAMPLE PROJECT TASK STARTS HERE -->
     
                         <!-- SAMPLE PROJECT TASK ENDS HERE -->} */}
+                        {doneItems}
                     </div>
                 </div>
             </div>
