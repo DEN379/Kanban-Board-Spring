@@ -1,7 +1,8 @@
-import {DELETE_PROJECT_TASK, GET_PROJECT_TASKS} from "../actions/types";
+import {DELETE_PROJECT_TASK, GET_PROJECT_TASKS, GET_PROJECT_TASK} from "../actions/types";
 
 const initialState = {
-    project_tasks: []
+    project_tasks: [],
+    project_task: {}
 };
 
 export default function(state=initialState, action){
@@ -10,6 +11,11 @@ export default function(state=initialState, action){
             return{
                 ...state,
                 project_tasks: action.payload
+            };
+        case GET_PROJECT_TASK: 
+            return{
+                ...state,
+                project_task: action.payload
             };
         case DELETE_PROJECT_TASK:
             return{
